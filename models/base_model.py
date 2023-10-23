@@ -5,7 +5,7 @@ from uuid import uuid4
 from datetime import datetime
 
 
-class BaseModel():
+class BaseModel:
     """shared atrs/meths"""
     def __init__(self):
         """init"""
