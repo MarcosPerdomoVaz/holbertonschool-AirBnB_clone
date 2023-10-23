@@ -7,6 +7,7 @@ from datetime import datetime
 
 class BaseModel:
     """shared atrs/meths"""
+
     def __init__(self):
         """init"""
         self.id = str(uuid4())
