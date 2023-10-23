@@ -1,7 +1,8 @@
 #!/usr/bin/python3
+"""Base Class"""
+
 from uuid import uuid4
 from datetime import datetime
-"""Base Class"""
 
 
 class BaseModel():
