@@ -9,12 +9,12 @@ class BaseModel:
     """shared atrs/meths"""
 
     def __init__(self):
-        """init"""
+        """init s a"""
         self.id = str(uuid4())
         self.created_at = datetime.now()
 
     def __str__(self):
-        """str"""
+        """str sjh"""
         return f"[{type(self).__name__}] ({self.id}) {self.__dict__}"
 
     def save(self):
