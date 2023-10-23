@@ -11,10 +11,26 @@ class BaseModel:
 
     """
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """init s sdsdfd dfasdfsfa"""
-        self.id = str(uuid4())
-        self.created_at = datetime.now()
+        if not kwargs:
+            self.id = str(uuid4())
+            self.created_at = datetime.now()
+            self.save()
+        else:
+            for key, value in kwargs.items():
+                if key == "created_at":
+                    self.created_at = datetime.strptime(
+                        value, "%Y-%m-%dT%H:%M:%S.%f")
+                if key == "updated_at":
+                    self.updated_at = datetime.strptime(
+                        value, "%Y-%m-%dT%H:%M:%S.%f")
+                if key == "id":
+                    self.id = value
+                if key == "name":
+                    self.name = value
+                if key == "my_number":
+                    self.my_number = value
 
     def __str__(self):
         """str ssdsdd sdsd jh"""
