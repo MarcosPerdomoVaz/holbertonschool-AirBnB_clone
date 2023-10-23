@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Base Class"""
+"""Base Class sdsdd sad"""
 
 from uuid import uuid4
 from datetime import datetime
@@ -9,12 +9,12 @@ class BaseModel:
     """shared atrs/meths"""
 
     def __init__(self):
-        """init s a"""
+        """init s sdsdfd dfasdfsfa"""
         self.id = str(uuid4())
         self.created_at = datetime.now()
 
     def __str__(self):
-        """str sjh"""
+        """str ssdsdd sdsd jh"""
         return f"[{type(self).__name__}] ({self.id}) {self.__dict__}"
 
     def save(self):
