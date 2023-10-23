@@ -6,7 +6,10 @@ from datetime import datetime
 
 
 class BaseModel:
-    """shared atrs/meths"""
+    """
+    A class used to represent an Animal
+
+    """
 
     def __init__(self):
         """init s sdsdfd dfasdfsfa"""
