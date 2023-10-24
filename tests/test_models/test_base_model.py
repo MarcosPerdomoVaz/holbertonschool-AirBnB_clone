@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import unittest
+from models import base_model
 from models.base_model import BaseModel
 
 class Test(unittest.TestCase):
@@ -9,6 +10,15 @@ class Test(unittest.TestCase):
         """bbjbnb sadsd asddas """
         base = BaseModel()
         self.assertEqual(base.__str__(), f"[{type(base).__name__}] ({base.id}) {base.__dict__}")
+
+    def test_docmodule(self):
+        """checking doc module"""
+        self.assertIsNotNone(base_model.__doc__)
+
+    def test_docclass(self):
+        """checking doc class"""
+        self.assertIsNotNone(BaseModel.__doc__)
+
 
 if __name__ == '__main__':
     unittest.main()
