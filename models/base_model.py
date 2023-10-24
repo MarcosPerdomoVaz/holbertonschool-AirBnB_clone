@@ -17,7 +17,7 @@ class BaseModel:
         if not kwargs:
             self.id = str(uuid4())
             self.created_at = datetime.now()
-            self.save()
+            self.updated_at = datetime.now()
             models.storage.new(self)
         else:
             for key, value in kwargs.items():
@@ -45,7 +45,7 @@ class BaseModel:
 
     def to_dict(self):
         """dict for seralization"""
-        dic = self.__dict__
+        dic = self.__dict__.copy()
         dic["__class__"] = type(self).__name__
         dic["created_at"] = self.created_at.isoformat()
         dic["updated_at"] = self.updated_at.isoformat()
