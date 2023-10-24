@@ -18,6 +18,7 @@ test = BaseModel()
 
 
 def del_old_files():
+    """fddsfdffdfg fg fdgf"""
     try:
         os.remove("recover_objs.json")
     except FileNotFoundError:
