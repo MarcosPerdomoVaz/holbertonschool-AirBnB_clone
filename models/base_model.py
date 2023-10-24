@@ -2,8 +2,6 @@
 """Base Class sdsdd sad"""
 from uuid import uuid4
 from datetime import datetime
-import models
-
 
 
 class BaseModel:
@@ -14,25 +12,22 @@ class BaseModel:
 
     def __init__(self, *args, **kwargs):
         """init s sdsdfd dfasdfsfa"""
-        if not kwargs:
+        from . import storage
+        if kwargs:
+            for key, value in kwargs.items():
+                if key == 'created_at':
+                    self.created_at = datetime.strptime(
+                        kwargs['created_at'], "%Y-%m-%dT%H:%M:%S.%f")
+                elif key == 'updated_at':
+                    self.updated_at = datetime.strptime(
+                        kwargs['updated_at'], "%Y-%m-%dT%H:%M:%S.%f")
+                elif key != '__class__':
+                    setattr(self, key, value)
+        else:
             self.id = str(uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
-            models.storage.new(self)
-        else:
-            for key, value in kwargs.items():
-                if key == "created_at":
-                    self.created_at = datetime.strptime(
-                        value, "%Y-%m-%dT%H:%M:%S.%f")
-                if key == "updated_at":
-                    self.updated_at = datetime.strptime(
-                        value, "%Y-%m-%dT%H:%M:%S.%f")
-                if key == "id":
-                    self.id = value
-                if key == "name":
-                    self.name = value
-                if key == "my_number":
-                    self.my_number = value
+            storage.new(self)
 
     def __str__(self):
         """str ssdsdd sdsd jh"""
@@ -40,8 +35,9 @@ class BaseModel:
 
     def save(self):
         """update every time obj is accsesed"""
+        from . import storage
         self.updated_at = datetime.now()
-        models.storage.save()
+        storage.save()
 
     def to_dict(self):
         """dict for seralization"""

@@ -2,6 +2,7 @@
 """dsadsd sadsad sad sd"""
 
 import json
+from models.base_model import BaseModel
 
 
 class FileStorage:
@@ -29,12 +30,7 @@ class FileStorage:
         """reloads objects and save to dic"""
         try:
             with open(self.__file_path) as file:
-                diki = json.load(file)
-                for key, value in diki.items():
-                    class_name = value['__class__']
-                    class_obj = eval(class_name)
-                    for key2, val2 in value.items():
-                        setattr(class_obj, key2, val2)
-                    self.__objects[key] = class_obj 
-        except Exception:
+                for key, value in json.load(file).items():
+                    self.__objects[key] = eval(value['__class__'])(**value)
+        except FileNotFoundError:
             pass
