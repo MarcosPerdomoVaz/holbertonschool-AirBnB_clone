@@ -14,11 +14,16 @@ class FileStorage:
         return self.__objects
 
     def new(self, obj):
+        """sdsdsd sdsd sad sads a"""
         self.__objects[f"{type(obj).__name__}.{obj.id}"] = obj
 
     def save(self):
-        with open(self.__file_path) as file:
-            file.write(json.dumps(self.__objects))
+        """bla blaabalbslbdlksbd s sdsadf """
+        new_dict = {}
+        for key, value in self.__objects.items():
+            new_dict.update([(key, value.to_dict())])
+        with open(self.__file_path, "w", encoding='UTF-8') as file:
+            json.dump(new_dict, file)
 
     def reload(self):
         """reloads objects and save to dic"""
@@ -30,6 +35,6 @@ class FileStorage:
                     class_obj = eval(class_name)
                     for key2, val2 in value.items():
                         setattr(class_obj, key2, val2)
-                    self.__objects[key] = class_obj
+                    self.__objects[key] = class_obj 
         except Exception:
             pass
