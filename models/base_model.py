@@ -1,7 +1,5 @@
 #!/usr/bin/python3
 """Base Class sdsdd sad"""
-import sys
-sys.path.append('.')
 from uuid import uuid4
 from datetime import datetime
 import models
