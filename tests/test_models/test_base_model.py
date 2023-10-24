@@ -12,7 +12,7 @@ from models.engine.file_storage import FileStorage
 import json
 
 
-# Global variables
+"""# Global variables"""
 file_storage = FileStorage()
 test = BaseModel()
 
@@ -86,10 +86,8 @@ class test_class_base(unittest.TestCase):
     def test_id(self):
         """Test the id attribute."""
         test_dict = {}
-        # Create a multiple instances of the base model
         for index in range(1, 101):
             test_dict[f"model{index}"] = BaseModel()
-        # Check the id attribute for each model
         for index, value in enumerate(test_dict.values(), 1):
             self.assertNotEqual(value.id, test_dict.get(
                 f"model{index + 1}", test).id
