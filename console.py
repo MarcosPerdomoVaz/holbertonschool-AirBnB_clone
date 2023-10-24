@@ -2,7 +2,9 @@
 """sddfsd dfdf df d f"""
 
 import cmd
-
+import sys
+import models
+from models.base_model import BaseModel
 
 class HBNBCommand(cmd.Cmd):
     """class command console"""
