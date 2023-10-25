@@ -14,7 +14,6 @@ class HBNBCommand(cmd.Cmd):
     """
     our cmd loop interpreter
     """
-    intro = 'Welcome to the shell. Type help or ? to list commands.\n'
     prompt = '(hbnb) '
 
     def do_quit(self, args):
@@ -26,28 +25,17 @@ class HBNBCommand(cmd.Cmd):
         print("")
         return True
 
-    def do_create(self, arg):
-        """sd  f df df  df """
-        if len(arg) == 0:
-            print("** class name missing **")
-        elif arg not in self.class_names:
-            print("** class doesn't exist **")
-        else:
-            cr_inst = BaseModel()
-            cr_inst.save()
-            print(cr_inst.id)
-
     def do_show(self, arg):
-        """sdsdsd s d sdsa dsd """
+        """Prints the string representation of an instance based on the class name and id"""
         arg_list = arg.split(" ")
         if len(arg_list) < 1:
             print("** class name missing **")
-        elif arg_list[0] not in self.class_names:
+        elif arg_list[0] not in classes:
             print("** class doesn't exist **")
         elif len(arg_list) < 2:
             print("** instnace id missing **")
         else:
-            stored_objs = storage.all()
+            stored_objs = models.storage.all()
             if f"{arg_list[0]}.{arg_list[1]}" in stored_objs.keys():
                 print(f"{stored_objs[f'{arg_list[0]}.{arg_list[1]}']}")
             else:
@@ -64,9 +52,7 @@ class HBNBCommand(cmd.Cmd):
         if len(arg) == 0:
             print("** class name missing **")
             return False
-        if len(arg) > 1:
-                raise TypeError("Incorrect number of arguments")
-        if args in classess:
+        elif args in classes:
             instance = eval(str(args) + "()")
             instance.save()
             print(instance.id)
@@ -74,48 +60,19 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return False
 
-    def do_show(self, args):
-        """Prints the string representation of an instance\n"""
-        arg = args.split()
-        if len(args) == 0:
-            print("** class name missing **")
-            return False
-        if len(arg) == 1:
-            raise TypeError("Incorrect number of arguments")
-            return False
-        if len(arg[1]) == 0:
-            print("** instance id missing **")
-            return False
-        if len(arg) > 2:
-            raise TypeError("Incorrect number of arguments")
-            return False
-        if arg[0] not in classes:
-            print("** class doesn't exist **")
-            return False
-        else:
-            key = arg[0] + "." + arg[1]
-            if key in models.storage.all():
-                print(models.storage.all()[key])
-            else:
-                print("** no instance found **")
-
     def do_destroy(self, args):
         """Deletes an instance based on the class name and id\n"""
         arg = args.split()
         if len(args) == 0:
             print("** class name missing **")
             return False
-        if len(arg) == 1:
-            raise TypeError("Incorrect number of arguments")
-            return False
-        if len(arg[1]) == 0:
-            print("** instance id missing **")
-            return False
-        if len(arg) > 2:
-            raise TypeError("Incorrect number of arguments")
         if arg[0] not in classes:
             print("** class doesn't exist **")
             return False
+        if len(arg) < 2:
+            print("** instance id missing **")
+            return False
+
         else:
             key = arg[0] + "." + arg[1]
             if key in models.storage.all():
@@ -126,7 +83,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """Prints all string representation of all instances
-        Based or not on the class name\n"""
+        specifying or not on the class name\n"""
         arg = args.split()
         objList = []
         if len(args) == 0:
@@ -150,25 +107,23 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 0:
             print("** class name missing **")
             return False
-        if len(arg) == 1:
-            print("** instance id missing **")
-            return False
-        if len(arg) == 2:
-            print("** attribute name missing **")
-            return False
-        if len(arg) == 3:
-            print("** value missing **")
-            return False
-        if len(arg) > 4:
-            raise TypeError("Incorrect number of arguments")
-            return False
         if arg[0] not in classes:
             print("** class doesn't exist **")
             return False
-        else:
+        elif len(arg) < 2:
+            print("** instance id missing **")
+            return False
+        elif len(arg) < 3:
+            print("** attribute name missing **")
+            return False
+        elif len(arg) < 4:
+            print("** value missing **")
+            return False
+        elif len(arg) < 5:
             key = arg[0] + "." + arg[1]
             if key in models.storage.all():
-                setattr(models.storage.all()[key], arg[2], arg[3])
+                setattr(models.storage.all()[key], arg[2], arg[3].replace('"', ""))
+                models.storage.all()[key].save()
                 models.storage.save()
             else:
                 print("** no instance found **")
