@@ -1,90 +1,105 @@
 #!/usr/bin/python3
-"""sddfsd dfdf df d f"""
+"""Console for holbertonschool-AirBnB_clone"""
+
 
 import cmd
 import sys
 import models
 from models.base_model import BaseModel
 
-class HBNBCommand(cmd.Cmd):
-    """class command console"""
-    prompt = "(hbnb)"
+classes = {"BaseModel": BaseModel}
 
-    def do_quit(self, arg):
-        """quit command"""
+
+class HBNBCommand(cmd.Cmd):
+    """
+    our cmd loop interpreter
+    """
+    intro = 'Welcome to the shell. Type help or ? to list commands.\n'
+    prompt = '(hbnb) '
+
+    def do_quit(self, args):
+        """Quit command to exit the program\n"""
         return True
 
-    def do_EOF(self,arg):
-        """ctr + d"""
+    def do_EOF(self, args):
+        """Quit console at EOF\n"""
+        print("")
         return True
 
     def emptyline(self):
+        """No action: input is empty line + ENTER\n"""
         pass
 
-        def do_create(self, args):
-            """Creates a new instance of BaseModel"""
+    def do_create(self, args):
+        """Creates a new instance of BaseModel
+        saves it (to the JSON file) and prints the id\n"""
         arg = args.split()
-        if len(args) == 0:
+        if len(arg) == 0:
             print("** class name missing **")
-            return False
-        if arg[0] not in classes:
-            print("** class doesn't exist **")
             return False
         if len(arg) > 1:
-            print("Incorrect number of arguments")
+                raise TypeError("Incorrect number of arguments")
+        if args in classess:
+            instance = eval(str(args) + "()")
+            instance.save()
+            print(instance.id)
+        else:
+            print("** class doesn't exist **")
             return False
-        instance = eval(str(args) + "()")
-        instance.save()
-        print(instance.id)
 
     def do_show(self, args):
-        """Prints the string representation of an instance"""
+        """Prints the string representation of an instance\n"""
         arg = args.split()
         if len(args) == 0:
             print("** class name missing **")
             return False
-        if arg[0] not in classes:
-            print("** class doesn't exist **")
-            return False
         if len(arg) == 1:
+            raise TypeError("Incorrect number of arguments")
+            return False
+        if len(arg[1]) == 0:
             print("** instance id missing **")
             return False
         if len(arg) > 2:
-            print("Incorrect number of arguments")
+            raise TypeError("Incorrect number of arguments")
             return False
-        key = arg[0] + "." + arg[1]
-        storage = models.storage.all()
-        if key in storage:
-            print(storage[key])
+        if arg[0] not in classes:
+            print("** class doesn't exist **")
+            return False
         else:
-            print("** no instance found **")
+            key = arg[0] + "." + arg[1]
+            if key in models.storage.all():
+                print(models.storage.all()[key])
+            else:
+                print("** no instance found **")
 
     def do_destroy(self, args):
-        """Deletes an instance based on the class name and id"""
+        """Deletes an instance based on the class name and id\n"""
         arg = args.split()
         if len(args) == 0:
             print("** class name missing **")
             return False
-        if arg[0] not in classes:
-            print("** class doesn't exist **")
-            return False
         if len(arg) == 1:
+            raise TypeError("Incorrect number of arguments")
+            return False
+        if len(arg[1]) == 0:
             print("** instance id missing **")
             return False
         if len(arg) > 2:
-            print("Incorrect number of arguments")
+            raise TypeError("Incorrect number of arguments")
+        if arg[0] not in classes:
+            print("** class doesn't exist **")
             return False
-        key = arg[0] + "." + arg[1]
-        storage = models.storage.all()
-        if key in storage:
-            del(storage[key])
-            models.storage.save()
         else:
-            print("** no instance found **")
+            key = arg[0] + "." + arg[1]
+            if key in models.storage.all():
+                del(models.storage.all()[key])
+                models.storage.save
+            else:
+                print("** no instance found **")
 
     def do_all(self, args):
         """Prints all string representation of all instances
-        Based or not on the class name"""
+        Based or not on the class name\n"""
         arg = args.split()
         objList = []
         if len(args) == 0:
@@ -93,16 +108,12 @@ class HBNBCommand(cmd.Cmd):
             print(objList)
         if len(arg) == 1:
             if arg[0] in classes:
-                storage = models.storage.all()
-                for key in storage:
+                for key in models.storage.all():
                     if arg[0] in key:
-                        objList.append(str(storage[key]))
+                        objList.append(str(models.storage.all()[key]))
                 print(objList)
             else:
                 print("** class doesn't exist **")
-        if len(arg) > 1:
-            print("Incorrect number of arguments")
-            return False
 
     def do_update(self, args):
         """Updates an instance
@@ -111,9 +122,6 @@ class HBNBCommand(cmd.Cmd):
         arg = args.split()
         if len(args) == 0:
             print("** class name missing **")
-            return False
-        if arg[0] not in classes:
-            print("** class doesn't exist **")
             return False
         if len(arg) == 1:
             print("** instance id missing **")
@@ -125,21 +133,20 @@ class HBNBCommand(cmd.Cmd):
             print("** value missing **")
             return False
         if len(arg) > 4:
-            print("Incorrect number of arguments")
+            raise TypeError("Incorrect number of arguments")
             return False
-        key = arg[0] + "." + arg[1]
-        storage = models.storage.all()
-        arg[3] = arg[3].strip('\"')
-        argCheck = arg[3].replace(".", "")
-        if arg[3].isdigit():
-            arg[3] = int(arg[3])
-        elif argCheck.isdigit():
-            arg[3] = float(arg[3])
-        if key in storage:
-            setattr(storage[key], arg[2], arg[3])
-            models.storage.save()
+        if arg[0] not in classes:
+            print("** class doesn't exist **")
+            return False
         else:
-            print("** no instance found **")
+            key = arg[0] + "." + arg[1]
+            if key in models.storage.all():
+                setattr(models.storage.all()[key], arg[2], arg[3])
+                models.storage.save()
+            else:
+                print("** no instance found **")
+
 
 if __name__ == '__main__':
+    """our main"""
     HBNBCommand().cmdloop()
