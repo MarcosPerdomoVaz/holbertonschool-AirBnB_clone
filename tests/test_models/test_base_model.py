@@ -67,3 +67,13 @@ class test_class_base(unittest.TestCase):
         self.assertEqual(type(dic), dict)
         self.assertTrue(type(dic['created_at']) is str)
         self.assertTrue(type(dic['updated_at']) is str)
+
+    def test_save(self):
+        """Test if save method calls save method of storage."""
+        b = BaseModel()
+        u_time1 = b.updated_at
+        for _ in range(999):
+            pass
+        b.save()
+        u_time2 = b.updated_at
+        self.assertNotEqual(u_time1, u_time2)
