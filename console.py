@@ -6,8 +6,13 @@ import cmd
 import sys
 import models
 from models.base_model import BaseModel
+from models.user import User
 
-classes = {"BaseModel": BaseModel}
+
+classes = {
+    "BaseModel": BaseModel,
+    "User": User,
+           }
 
 
 class HBNBCommand(cmd.Cmd):
@@ -46,8 +51,7 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """Creates a new instance of BaseModel
-        saves it (to the JSON file) and prints the id\n"""
+        """Creates a new instance of BaseModel saves it (to the JSON file) and prints the id\n"""
         arg = args.split()
         if len(arg) == 0:
             print("** class name missing **")
