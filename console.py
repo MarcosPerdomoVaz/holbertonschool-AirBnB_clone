@@ -38,7 +38,7 @@ class HBNBCommand(cmd.Cmd):
         elif arg_list[0] not in classes:
             print("** class doesn't exist **")
         elif len(arg_list) < 2:
-            print("** instance id missing **")
+            print("** instnace id missing **")
         else:
             stored_objs = models.storage.all()
             if f"{arg_list[0]}.{arg_list[1]}" in stored_objs.keys():
@@ -80,8 +80,8 @@ class HBNBCommand(cmd.Cmd):
         else:
             key = arg[0] + "." + arg[1]
             if key in models.storage.all():
-                del(models.storage.all()[key])
-                models.storage.save
+                models.storage.all().pop(key)
+                models.storage.save()
             else:
                 print("** no instance found **")
 
