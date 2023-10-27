@@ -41,7 +41,8 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def do_show(self, arg):
-        """Prints the string representation of an instance based on the class name and id"""
+        """Prints the string representation of
+        an instance based on the class name and id"""
         arg_list = arg.split()
         if len(arg_list) < 1:
             print("** class name missing **")
@@ -61,7 +62,8 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """Creates a new instance of BaseModel saves it (to the JSON file) and prints the id\n"""
+        """Creates a new instance of BaseModel saves
+        it (to the JSON file) and prints the id\n"""
         arg = args.split()
         if len(arg) == 0:
             print("** class name missing **")
@@ -136,7 +138,8 @@ class HBNBCommand(cmd.Cmd):
         elif len(arg) < 5:
             key = arg[0] + "." + arg[1]
             if key in models.storage.all():
-                setattr(models.storage.all()[key], arg[2], arg[3].replace('"', ""))
+                setattr(models.storage.all()[key],
+                        arg[2], arg[3].replace('"', ""))
                 models.storage.all()[key].save()
                 models.storage.save()
             else:
