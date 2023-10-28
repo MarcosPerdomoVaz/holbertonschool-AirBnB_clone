@@ -1,79 +1,66 @@
 #!/usr/bin/python3
 """
-testing class base
+    Unit tests for BaseModel
 """
 
 import unittest
-import os
-from models import base_model
-from datetime import datetime
 from models.base_model import BaseModel
+import pycodestyle
+from datetime import datetime
+from models.engine.file_storage import FileStorage
+from os import path
 
 
-class test_class_base(unittest.TestCase):
-    """class for testing class base model"""
+class BaseModelTest(unittest.TestCase):
+    """Test for BaseModel"""
 
-    @classmethod
-    def setUpClass(self):
-        """set class"""
-        self.my_model = BaseModel()
-
-    def setUp(self):
-        """ set attr """
-        self.dict = self.my_model.to_dict()
-
-    def test_docmodule(self):
-        """checking doc module"""
-        self.assertIsNotNone(base_model.__doc__)
-
-    def test_docclass(self):
-        """checking doc class"""
-        self.assertIsNotNone(BaseModel.__doc__)
-
-    def test_create_base(self):
-        """test instance class BaseModel"""
-        self.assertIsInstance(self.my_model, BaseModel)
+    def test_pep8_base(self):
+        """check PEP8 style"""
+        syntaxis = pycodestyle.StyleGuide(quit=True)
+        check = syntaxis.check_files(['models/base_model.py'])
+        self.assertEqual(
+            check.total_errors, 0,
+            "Found code style errors"
+        )
 
     def test_attr(self):
-        """test attributes"""
-        self.assertEqual(type(self.my_model.id), str)
-        self.assertEqual(type(self.my_model.created_at), datetime)
-        self.assertEqual(type(self.my_model.updated_at), datetime)
+        """test class attributes"""
+        my_baseModel = BaseModel()
+        self.assertIs(type(my_baseModel.id), str)
+        self.assertIs(type(my_baseModel.created_at), datetime)
+        self.assertIs(type(my_baseModel.updated_at), datetime)
 
-        self.my_model.name = "My First Model"
-        self.my_model.my_number = 89
-        self.assertIn("name", self.my_model.to_dict())
-        self.assertIn("my_number", self.my_model.to_dict())
-        self.dict = self.my_model.to_dict()
-        self.assertEqual(self.dict["my_number"], 89)
-        self.assertEqual(self.dict["name"], "My First Model")
+    def test_str(self):
+        """test __str__ method"""
+        m = BaseModel()
+        self.assertEqual(f"[{type(m).__name__}] ({m.id}) {m.__dict__}", str(m))
 
-    def test_create_kwargs(self):
-        """ create class from dictionary """
-        self.kwargs = BaseModel(self.dict)
-        self.assertIsInstance(self.kwargs, BaseModel)
-
-    def test_update(self):
-        """ test update date """
-        update_old = self.my_model.updated_at
-        self.my_model.save()
-        update_new = self.my_model.updated_at
-        self.assertTrue(update_old != update_new)
+    def test_save(self):
+        """test save method"""
+        my_baseModel = BaseModel()
+        my_fileStorage = FileStorage()
+        update = my_baseModel.__dict__['updated_at']
+        my_baseModel.save()
+        self.assertTrue(path.isfile('file.json'))
+        self.assertNotEqual(my_baseModel.__dict__['updated_at'], update)
+        update = my_baseModel.__dict__['updated_at']
+        my_fileStorage.reload()
+        self.assertEqual(my_baseModel.__dict__['updated_at'], update)
 
     def test_to_dict(self):
-        """test_to_dict """
+        """test to_dict_method"""
         bm = BaseModel()
-        dic = bm.to_dict()
-        self.assertEqual(type(dic), dict)
-        self.assertTrue(type(dic['created_at']) is str)
-        self.assertTrue(type(dic['updated_at']) is str)
+        self.assertEqual(bm.to_dict()["id"], bm.id)
+        self.assertEqual(bm.to_dict()["created_at"], bm.created_at.isoformat())
+        self.assertEqual(bm.to_dict()["updated_at"], bm.updated_at.isoformat())
+        self.assertEqual(bm.to_dict()['__class__'], bm.__class__.__name__)
 
-    def testSave(self):
-        """Test if save method calls save method of storage."""
-        b = BaseModel()
-        u_time1 = b.updated_at
-        for _ in range(999):
-            pass
-        b.save()
-        u_time2 = b.updated_at
-        self.assertNotEqual(u_time1, u_time2)
+    def test_not_equal_id(self):
+        """test two instane ids"""
+        id_a = BaseModel()
+        id_b = BaseModel()
+        self.assertNotEqual(id_a.id, id_b.id)
+
+
+if __name__ == '__main__':
+    unittest.main()
