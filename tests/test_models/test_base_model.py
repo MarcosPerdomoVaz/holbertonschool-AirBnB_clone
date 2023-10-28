@@ -68,7 +68,7 @@ class test_class_base(unittest.TestCase):
         self.assertTrue(type(dic['created_at']) is str)
         self.assertTrue(type(dic['updated_at']) is str)
 
-    def test_save(self):
+    def testSave(self):
         """Test if save method calls save method of storage."""
         b = BaseModel()
         u_time1 = b.updated_at
